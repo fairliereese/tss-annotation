@@ -1,6 +1,7 @@
 
 cellType=$1
 mode=$2
+boundary=$3
 
 dataDir=/data/tss_annotations
 scriptDir=~/Scripts/tss-annotation/cCRE-Intersections/
@@ -17,6 +18,11 @@ elif [ $mode == "CAGE" ]
 then
     awk '{if (NR != 1 && $NF > 0) print $0}' $rankedList | sort -k2,2rg > tmp.ranked-list
     col=2
+fi
+
+if [ $boundary == "summit" ]
+then
+    peakList=$dataDir/Transcription-Datasets/$mode/hg38/All-Biosamples-$mode-Summits.bed
 fi
 
 grep -v "Low-DNase" $ccres > tmp.active-ccres
