@@ -3,6 +3,7 @@ cellType=$1
 mode=$2
 
 dataDir=/data/tss_annotations
+scriptDir=~/Scripts/tss-annotation/cCRE-Intersections/
 ccres=$dataDir/Chromatin-Datasets/cCREs/hg38/$cellType/$cellType-cCREs.bed
 rankedList=$dataDir/Transcription-Datasets/$mode/hg38/$cellType/$cellType-$mode-*Peak-Quantifications.txt
 peakList=$dataDir/Transcription-Datasets/$mode/hg38/All-Biosamples-$mode-*Peaks.bed
@@ -31,11 +32,13 @@ do
     bedtools intersect -u -a tmp.mini-bed -b tmp.active-ccres | wc -l | 
 	awk '{print "'$i'" "\t" "'$x'" "\t" $1 "\t" $1/500*100}' >> log.tss
     bedtools intersect -u -a tmp.active-ccres -b tmp.mini-bed > tmp.intersect
-    python /users/moore/Scripts/count-ccre-groups.py tmp.intersect | \
+    python $scriptDir/count-ccre-groups.py tmp.intersect | \
 	awk '{print "'$i'" "\t" "'$x'" $0}' >> log.ccre 
 done
 
 mv log.tss $mode-$cellType-TSS-Overlap.txt
 mv log.ccre $mode-$cellType-cCRE-Overlap.txt
+
+Rscript $scriptDir/plot-ccre-intersections.R $cellType $mode
 
 rm -f tmp.* log.*
