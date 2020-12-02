@@ -1,5 +1,7 @@
 Code to run stuff from last jamboree (June 2020) is in `intersect_tss_tes.sh`. This includes merging TSSs/TESs within 50 bp of each other, merging with Gencode and ONT data.
 
+## December 2020 Jamboree
+
 ### Getting a bigwig files for TSSs/TESs from PacBio Sequel II GM12878 data
 ```bash
 infile=data/GM12878_talon_read_annot.tsv
