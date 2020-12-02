@@ -4,7 +4,7 @@ Code to run stuff from last jamboree (June 2020) is in `intersect_tss_tes.sh`. T
 
 ## December 2020 Jamboree
 
-### Getting a bigwig files for TSSs/TESs from PacBio Sequel II GM12878 data
+### Getting bigwig files for TSSs/TESs from PacBio Sequel II GM12878 data
 ```bash
 infile=data/GM12878_talon_read_annot.tsv
 datasets=PB_GM12878_R1,PB_GM12878_R2
