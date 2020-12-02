@@ -103,12 +103,12 @@ def main():
 	print('Filtering for ends above {} TPM'.format(min_tpm))
 
 	# TPM filter
-	tss_df = pd.read_csv(tss_sorted_merged_file, sep='\t',
+	tss_df = pd.read_csv(tss_sorted_merged_file, sep='\t', header=None,
 		names=['chrom', 'start', 'stop', 'name', 'counts', 'strand'])
 	total_count = tss_df.counts.sum()
 	tss_df['tpm'] = (tss_df.counts*1000000)/total_count
 
-	tes_df = pd.read_csv(tes_sorted_merged_file, sep='\t',
+	tes_df = pd.read_csv(tes_sorted_merged_file, sep='\t', header=None
 		names=['chrom', 'start', 'stop', 'name', 'counts', 'strand'])
 	total_count = tes_df.counts.sum()
 	tes_df['tpm'] = (tes_df.counts*1000000)/total_count
