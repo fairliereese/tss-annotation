@@ -13,7 +13,17 @@ chrom_sizes=~/mortazavi_lab/ref/hg38/hg38.chrom.sizes
 infile=data/GM12878_talon_read_annot.tsv
 datasets=PB_GM12878_R1,PB_GM12878_R2
 oprefix=data/pb_gm12878_sequel2
-bash get_bigwig_from_talon_ends.sh \
+bash get_bigwig_from_talon_annot_ends.sh \
+	-a ${infile} \
+	-c ${chrom_sizes} \
+	-o ${oprefix}
+
+
+# K562 - PacBio Sequel I (ENCLB846KPV, ENCLB095ZGG)
+infile=data/K562_Sequel1_talon_read_annot.tsv
+datasets='D10,D11'
+oprefix=data/pb_k562_sequel1
+bash get_bigwig_from_talon_annot_ends.sh \
 	-a ${infile} \
 	-c ${chrom_sizes} \
 	-o ${oprefix}
@@ -124,6 +134,21 @@ python get_ends_from_talon_annot.py \
 annot=data/C2C12_talon_read_annot.tsv
 datasets='PB213,PB214'
 oprefix=data/c2c12_mt
+python get_ends_from_talon_annot.py \
+    -annot ${annot} \
+    -datasets ${datasets} \
+    -filter_type talon \
+    -min_tpm 1 \
+    -o ${oprefix}
+
+# New K562 - PacBio Sequel II (ENCLB096WLH, ENCLB722DIJ)
+r1=data/PB211_talon_read_annot.tsv
+r2=data/PB212_talon_read_annot.tsv
+annot=data/K562_sequel2_talon_read_annot.tsv
+cat ${r1} > ${annot}
+tail -n +2 ${r2} >> ${annot}
+datasets='PB211,PB212'
+oprefix='data/k562_sequel2'
 python get_ends_from_talon_annot.py \
     -annot ${annot} \
     -datasets ${datasets} \
