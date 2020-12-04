@@ -17,6 +17,9 @@ def get_args():
 		help="minimum tpm to call tss/tes")
 	parser.add_argument('-o', dest='oprefix',
 		help='prefix to save output files')
+	parser.add_argument('-index', dest='index_type',
+		help='What number to start at, 0 or 1', 
+		default='1')
 	args = parser.parse_args()
 	return args
 
@@ -27,6 +30,7 @@ def main():
 	ftype = args.ftype
 	oprefix = args.oprefix
 	min_tpm = float(args.min_tpm)
+	index_type = int(args.index_type)
 
 	if datasets != 'all':
 		datasets = datasets.split(',')
@@ -47,6 +51,12 @@ def main():
 	# remove novel genes
 	df = df.loc[df.gene_novelty == 'Known']
 
+	# if we're 0-indexing, decrement everything first
+	if index_type == 0:
+		df.read_start = df.read_start - 1
+		df.read_end = df.read_end -1
+
+
 	# filter transcript models by novelty
 	if ftype == 'known':
 		nov = ['Known']
@@ -64,7 +74,6 @@ def main():
 	tes_df.to_csv(fname, sep='\t', index=False)
 
 	print('Generating read_annot bed files...')
-
 	# starts
 	tss_file = oprefix+'_TSS.bed'
 	tss_df = tss_df[['chrom', 'read_start', 'strand']]
@@ -122,6 +131,8 @@ def main():
 	tss_filt = '{}_TSS_{}_tpm_filt.bed'.format(oprefix, min_tpm)
 	tes_filt = '{}_TES_{}_tpm_filt.bed'.format(oprefix, min_tpm)
 
+	print('{} TSSs'.format(len(tss_df.index)))
+	print('{} TESs'.format(len(tes_df.index)))
 	tss_df.to_csv(tss_filt, sep='\t', index=False, header=False)
 	tes_df.to_csv(tes_filt, sep='\t', index=False, header=False)
 
